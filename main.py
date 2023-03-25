@@ -7,7 +7,7 @@ from CreateAniFolders import FolderAniCreator
 # Replace the values below with your own API key and script name
 SERVER_PATH = 'https://moonshine.shotgunstudio.com/'
 SCRIPT_NAME = 'easylife122'
-API_KEY = 'iqnor4Bifz-gjswpvpliwjpxt'
+API_KEY = ''
 
 # Create a connection to the Shotgrid API
 sg = shotgun_api3.Shotgun(SERVER_PATH, script_name=SCRIPT_NAME, api_key=API_KEY)
