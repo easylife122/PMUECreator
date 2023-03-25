@@ -52,7 +52,7 @@ class FolderAniCreator():
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
 
         # create level 3 subfolder inside 03Seq
-        sequences = c_query.shotgridData()
+        # sequences = c_query.shotgridData()
 
 
         # rename uproject
