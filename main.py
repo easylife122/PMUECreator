@@ -51,6 +51,7 @@ class UICreator(QMainWindow):
     # A function to call create folder
     def clicked_create_folder(self):
         self.project_name = self.combo_box.currentText()
+        # self.project_id =
         folderAni.create_folders(self.project_name)
 
 

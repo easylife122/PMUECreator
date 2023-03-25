@@ -1,7 +1,10 @@
 import os
 import shutil
 import datetime
+import ShotGridInterface
 
+# Get ShotGridInterface.py to a query instance
+c_query = ShotGridInterface.query
 
 class FolderAniCreator():
     def create_folders(self, top_folder_entry):
@@ -42,12 +45,14 @@ class FolderAniCreator():
         new_folder_path = target_dir + '/' + new_folder_name
         shutil.move(copied_folder_path, new_folder_path)
 
-        # create the subfolders inside the top level folder
+        # create level 2 subfolder inside the top level folder
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
 
+        # create level 3 subfolder inside 03Seq
+        sequences = c_query.shotgridData()
 
 
         # rename uproject

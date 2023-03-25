@@ -5,6 +5,9 @@ class shotgridQuery():
         super().__init__()
 
         self.projects = []
+        self.assets = []
+        self.sequences = []
+        self.shots = []
 
         # Replace the values below with your own API key and script name
         SERVER_PATH = 'https://moonshine.shotgunstudio.com/'
@@ -23,11 +26,14 @@ class shotgridQuery():
 
     def shotgridData(self, project_id):
 
-        #Add a filter
+        # Add a filter
         _filter = [['project', 'is', {'id': project_id, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
-        data = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
 
-        return data
+        # Only call 'Asset', 'Sequence', Shot'
+        self.assets = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
+        self.sequencess = self.sg.find('Sequence', _filter, ['id', 'code', 'sg_asset_type'])
+        self.shots = self.sg.find('Shot', _filter)
+        return self.asset_data
         # sequences, shots, sets,
 
 query = shotgridQuery()

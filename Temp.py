@@ -1,5 +1,5 @@
 import shotgun_api3
-
+import os
 # Replace the values below with your own API key and script name
 SERVER_PATH = 'https://moonshine.shotgunstudio.com/'
 SCRIPT_NAME = 'easylife122'
@@ -14,6 +14,12 @@ sg = shotgun_api3.Shotgun(SERVER_PATH, script_name=SCRIPT_NAME, api_key=API_KEY)
 project_id = 4082
 
 _filter = [['project', 'is', {'id': project_id, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
-data = sg.find('Shot', _filter, ['id', 'code', 'sg_asset_type'])
+asset_data = sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
+sequence_data = sg.find('Sequence', _filter, ['id', 'code', 'sg_asset_type'])
+shot_data = sg.find('Shot', _filter, ['id', 'code', 'sg_asset_type'])
 
-print(data)
+print(sequence_data, shot_data)
+
+
+path = os.path.expanduser("~")
+print(path)
