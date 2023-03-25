@@ -27,7 +27,7 @@ class FolderAniCreator():
         sub_folder_02Ch = '02_Ch'
         sub_folder_03Seq = '03_Seq'
         sub_folder_04Temp = '04_Temp'
-        sub_folder_set1 = 'Set1'
+
 
         # create the target directory if it doesn't already exist
         if not os.path.exists(target_dir):
@@ -47,7 +47,7 @@ class FolderAniCreator():
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
-        os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env, sub_folder_set1))
+
 
 
         # rename uproject

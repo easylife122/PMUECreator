@@ -1,19 +1,11 @@
 import RunUE
-import shotgun_api3
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QComboBox
 from CreateAniFolders import FolderAniCreator
+import ShotGridInterface
 
-# Replace the values below with your own API key and script name
-SERVER_PATH = 'https://moonshine.shotgunstudio.com/'
-SCRIPT_NAME = 'easylife122'
-API_KEY = ''
-
-# Create a connection to the Shotgrid API
-sg = shotgun_api3.Shotgun(SERVER_PATH, script_name=SCRIPT_NAME, api_key=API_KEY)
-
-# Fetch a list of all the shots in the project
-projects = sg.find('Project', [], ['name'])
+# Get ShotGridInterface.py to a query instance
+m_query = ShotGridInterface.query
 
 class UICreator(QMainWindow):
 
@@ -34,6 +26,9 @@ class UICreator(QMainWindow):
         # Add a label for the combo box
         top_folder_label = QLabel('Select a project:')
         layout.addWidget(top_folder_label)
+
+        # Call shotgrid to get projects
+        projects = m_query.shotgridProject()
 
         # Create a combo box and add each project name to it
         self.combo_box = QComboBox()
@@ -57,6 +52,7 @@ class UICreator(QMainWindow):
     def clicked_create_folder(self):
         self.project_name = self.combo_box.currentText()
         folderAni.create_folders(self.project_name)
+
 
 # Call CreateAniFolders
 folderAni = FolderAniCreator()
