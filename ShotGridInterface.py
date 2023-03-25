@@ -17,17 +17,17 @@ class shotgridQuery():
     def shotgridProject(self):
 
         # Fetch a list of all projects
-        self.projects = self.sg.find('Project', [], ['name'])
+        self.projects = self.sg.find('Project', [], ['name', 'id'])
 
         return self.projects
 
-    def shotgridData(self, project_name):
+    def shotgridData(self, project_id):
 
         #Add a filter
-        _filter = [['project', 'is', {'name': project_name, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
-        characters = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
+        _filter = [['project', 'is', {'id': project_id, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
+        data = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
 
-        return characters
+        return data
         # sequences, shots, sets,
 
 query = shotgridQuery()

@@ -27,7 +27,7 @@ class UICreator(QMainWindow):
         top_folder_label = QLabel('Select a project:')
         layout.addWidget(top_folder_label)
 
-        # Call shotgrid to get projects
+        # Call ShotGridInterface.py to get projects
         projects = m_query.shotgridProject()
 
         # Create a combo box and add each project name to it
