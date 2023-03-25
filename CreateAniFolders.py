@@ -9,6 +9,7 @@ class FolderAniCreator():
         target_dir = 'D:/Projects/UEProjectTemp'
         UE_source_folder = "D:/Projects/UnreaProjects/ExampleUE_5_1_1"
         UEContent_folder_name = 'Content'
+        example_uproject_name = 'ExampleUE_5_1_1.uproject'
 
         # Get the current date
         today = datetime.date.today()
@@ -17,8 +18,11 @@ class FolderAniCreator():
         date_str = today.strftime('%Y%m')
 
         # get input values from text fields
-        top_folder_name = top_folder_entry.text()
+        top_folder_entry_remove_space = top_folder_entry.replace(" ", "_")
+        top_folder_name = top_folder_entry_remove_space
         date_top_folder_name = date_str + '_' + top_folder_name
+
+        # 2 lvl Folder names
         sub_folder_01Env = '01_Env'
         sub_folder_02Ch = '02_Ch'
         sub_folder_03Seq = '03_Seq'
@@ -35,7 +39,7 @@ class FolderAniCreator():
 
         # rename the copied folder
         new_folder_name = date_top_folder_name
-        new_folder_path = os.path.join(target_dir, new_folder_name)
+        new_folder_path = target_dir + '/' + new_folder_name
         shutil.move(copied_folder_path, new_folder_path)
 
         # create the subfolders inside the top level folder
@@ -44,6 +48,14 @@ class FolderAniCreator():
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
         os.makedirs(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env, sub_folder_set1))
+
+
+        # rename uproject
+        old_uproject_path_name = new_folder_path +'/' + example_uproject_name
+        new_uproject_name = top_folder_entry_remove_space + '.uproject'
+        new_uproject_path_name = new_folder_path + '/' + new_uproject_name
+        os.rename(old_uproject_path_name, new_uproject_path_name)
+        print(old_uproject_path_name, new_uproject_path_name)
 
 if __name__ == '__main__':
 
