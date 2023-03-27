@@ -2,6 +2,7 @@ import os
 import shutil
 import datetime
 import ShotGridInterface
+from pathlib import Path
 
 # Get ShotGridInterface.py to a query instance
 c_query = ShotGridInterface.query
@@ -70,16 +71,19 @@ class FolderAniCreator():
         print(old_uproject_path_name, new_uproject_path_name)
 
         # Create level 2 subfolder path
-        self.sf01Env_path = os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env)
-        self.sf02Ch_path = os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch)
-        self.sf03Seq_path = os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq)
-        self.sef04Temp_path = os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp)
+        self.sf01Env_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env))
+        self.sf02Ch_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch))
+        self.sf03Seq_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
+        self.sef04Temp_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
 
         # create level 2 subfolders
-        os.makedirs(self.sf01Env_path)
-        os.makedirs(self.sf02Ch_path)
-        os.makedirs(self.sf03Seq_path)
-        os.makedirs(self.sef04Temp_path)
+        self.sf01Env_path.mkdir()
+        self.sf02Ch_path.mkdir()
+        self.sf03Seq_path.mkdir()
+        self.sef04Temp_path.mkdir
+
+
+
 
         # Create Sequences subfolders
         # assets = c_query.shotgridAsset(project_id)
@@ -89,12 +93,22 @@ class FolderAniCreator():
 
         # Create Sequences subfolders
         sequences = c_query.shotgridSequence(project_id)
-        # print(sequences)
-        for sequence in sequences:
-            if sequence:
-                # os.makedirs(self.sf03Seq_path, sequence['code'])
-                print(self.sf03Seq_path)
-                print(sequence['code'])
+        shots = c_query.shotgridShot(project_id)
+
+        for shot in shots:
+            if shot:
+                # SeqPath = self.sf03Seq_path.joinpath(shot['sg_sequence.name'])
+                seq_name = shot['sg_sequence.name']
+                print(seq_name)
+                #ShotPath = SeqPath.joinpath(shot['code'])
+                #ShotPath.mkdir()
+
+                # sequence_code = sequence['name']
+        #for shot in shots:
+            #print(shot['sg_sequence.name'])
+            #if shot['sg_sequence.name'] == sequence_code:
+            #    ShotPath = SeqPath.joinpath(shot['code'])
+            #    ShotPath.mkdir()
 
 
 if __name__ == '__main__':
