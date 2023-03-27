@@ -13,10 +13,11 @@ class UICreator(QMainWindow):
         super().__init__()
 
         # Variable Initialization
-        self.project_name = ""
+        self.project_name = ''
+        self.project_id = ''
 
          # Set the main window title
-        self.setWindowTitle("Folder Creator")
+        self.setWindowTitle('Folder Creator')
 
         # Create a central widget and set its layout
         central_widget = QWidget(self)
@@ -28,19 +29,20 @@ class UICreator(QMainWindow):
         layout.addWidget(top_folder_label)
 
         # Call ShotGridInterface.py to get projects
-        projects = m_query.shotgridProject()
+        self.projects = m_query.shotgridProject()
 
         # Create a combo box and add each project name to it
         self.combo_box = QComboBox()
-        for project in projects:
+        for project in self.projects:
             self.combo_box.addItem(project['name'])
+
         layout.addWidget(self.combo_box)
 
         # Connect the currentTextChanged signal of the combo box to the print_selected_project_name slot function
         self.combo_box.currentTextChanged.connect(self.get_selected_project_name)
 
         # Create a button to run the folder creation function
-        create_button = QPushButton("Create Folders", self)
+        create_button = QPushButton('Create Folders', self)
         create_button.clicked.connect(self.clicked_create_folder)
         layout.addWidget(create_button)
 
@@ -50,9 +52,17 @@ class UICreator(QMainWindow):
 
     # A function to call create folder
     def clicked_create_folder(self):
+        # store the current combo_box text to project_name
         self.project_name = self.combo_box.currentText()
-        # self.project_id =
-        folderAni.create_folders(self.project_name)
+
+        # find match project name to get id
+        for project in self.projects:
+            if project['name'] == self.project_name:
+                self.project_id = project['id']
+                print(self.project_id)
+
+        # Run create animation folder module
+        folderAni.create_folders(self.project_name, self.project_id)
 
 
 # Call CreateAniFolders

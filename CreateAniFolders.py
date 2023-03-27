@@ -15,7 +15,7 @@ class FolderAniCreator():
         self.sf03Seq_path = ''
         self.sef04Temp_path = ''
 
-    def create_folders(self, top_folder_entry):
+    def create_folders(self, top_folder_entry, project_id):
 
         # Create folder to destination
         target_dir = 'D:/Projects/UEProjectTemp'
@@ -46,6 +46,8 @@ class FolderAniCreator():
         sub_folder_02Ch = '02_Ch'
         sub_folder_03Seq = '03_Seq'
         sub_folder_04Temp = '04_Temp'
+
+
 
         # create the target directory if it doesn't already exist
         if not os.path.exists(target_dir):
@@ -79,21 +81,25 @@ class FolderAniCreator():
         os.makedirs(self.sf03Seq_path)
         os.makedirs(self.sef04Temp_path)
 
+        # Create Sequences subfolders
+        # assets = c_query.shotgridAsset(project_id)
+        # print(assets)
+        #shots = c_query.shotgridShot(project_id)
+        #print(shots)
 
+        # Create Sequences subfolders
+        sequences = c_query.shotgridSequence(project_id)
+        # print(sequences)
+        for sequence in sequences:
+            if sequence:
+                # os.makedirs(self.sf03Seq_path, sequence['code'])
+                print(self.sf03Seq_path)
+                print(sequence['code'])
 
-  # def create_subfolders(self):
-
-        # create level 3 subfolder inside 03Seq
-       #  sequences = c_query.shotgridData()
 
 if __name__ == '__main__':
-
+    pass
     # create the application and main window
-    app = QApplication(sys.argv)
     folder_creator = FolderAniCreator()
-    folder_creator.show()
 
-
-    # start the event loop
-    sys.exit(app.exec_())
 
