@@ -9,10 +9,7 @@ class shotgridQuery():
         self.sequences = []
         self.shots = []
 
-        # Replace the values below with your own API key and script name
-        SERVER_PATH = 'https://moonshine.shotgunstudio.com/'
-        SCRIPT_NAME = 'easylife122'
-        API_KEY = 'iqnor4Bifz-gjswpvpliwjpxt'
+
 
         # Create a connection to the Shotgrid API
         self.sg = shotgun_api3.Shotgun(SERVER_PATH, script_name=SCRIPT_NAME, api_key=API_KEY)
