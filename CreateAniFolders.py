@@ -91,8 +91,13 @@ class FolderAniCreator():
         self.sf03Seq_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
         self.sef04Temp_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
 
+        # create level 2 subfolders _Common
+        shutil.copytree(folder_path_common, self.sf_Common_path)
+        common_example_folder = self.sf_Common_path.joinpath('ExampleFoldersCommon')
+        if os.path.exists(common_example_folder):
+            os.rename(common_example_folder, self.sf_Common_path)
+
         # create level 2 subfolders
-        self.sf_Common_path.mkdir()
         self.sf01Env_path.mkdir()
         self.sf02Ch_path.mkdir()
         self.sf03Seq_path.mkdir()
