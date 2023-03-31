@@ -103,7 +103,6 @@ class FolderAniCreator():
         self.sf03Seq_path.mkdir()
         self.sef04Temp_path.mkdir
 
-
         # Create Sequences and Shots subfolders
         sequences = c_query.shotgridSequence(project_id)
         shots = c_query.shotgridShot(project_id)
@@ -124,8 +123,6 @@ class FolderAniCreator():
                         # Make shots into a file path array
                         ShotPathPerline = str(ShotPath) + ' \n'
                         shotsPathArray.append(ShotPathPerline)
-
-        # print(shotsPathArray)
 
         # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
         filename = 'shotsPath.txt'
@@ -155,9 +152,8 @@ class FolderAniCreator():
                             os.rename(example_folder, SetPath)
 
 
-            except Exception as e:
-                print(f'An error occurred: {e}')
-        # print(setsPathArray)
+            except Exception as e1:
+                print(f'An error occurred: {e1}')
 
         # Pass Sets path for Unreal Script use, store into a setsPath.txt file
         filename = 'setsPath.txt'
@@ -167,6 +163,36 @@ class FolderAniCreator():
             #Get shots array and into a txt file
             f.writelines(setsPathArray)
 
+
+        # Create characters subfolders
+        characters = c_query.shotgridAsset(project_id)
+        chPathArray = []
+
+        for character in characters:
+            try:
+                if character:
+                    # Create all sg_asset_type: Character folders
+                    if str(character['sg_asset_type']) == 'Char':
+                        ChPath = self.sf02Ch_path.joinpath(character['code'])
+                        ChPathPerline = str(ChPath) + ' \n'
+                        chPathArray.append(ChPathPerline)
+
+                         # Copy example env folder and then rename the folder
+                        shutil.copytree(folder_path_character, ChPath)
+                        ch_example_folder = ChPath.joinpath('ExampleFoldersCharacter')
+                        if os.path.exists(ch_example_folder):
+                            os.rename(ch_example_folder, ChPath)
+
+            except Exception as e2:
+                print(f'An error occurred: {e2}')
+
+        # Pass Sets path for Unreal Script use, store into a setsPath.txt file
+        filename = 'chsPath.txt'
+        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        with open(filepath, 'w') as f:
+
+            #Get shots array and into a txt file
+            f.writelines(chPathArray)
 
 if __name__ == '__main__':
     pass

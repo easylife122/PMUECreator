@@ -18,8 +18,8 @@ asset_data = sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
 sequence_data = sg.find('Sequence', _filter, ['id', 'code', 'sg_asset_type'])
 shot_data = sg.find('Shot', _filter, ['id', 'code', 'sg_asset_type'])
 
-print(sequence_data, shot_data)
+print(asset_data)
 
-
+pass
 path = os.path.expanduser("~")
 print(path)
