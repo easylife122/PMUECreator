@@ -95,13 +95,17 @@ class FolderAniCreator():
         sequences = c_query.shotgridSequence(project_id)
         shots = c_query.shotgridShot(project_id)
 
-        for shot in shots:
-            if shot:
-                # SeqPath = self.sf03Seq_path.joinpath(shot['sg_sequence.name'])
-                seq_name = shot['sg_sequence.name']
-                print(seq_name)
-                #ShotPath = SeqPath.joinpath(shot['code'])
-                #ShotPath.mkdir()
+        for sequence in sequences:
+            if sequence:
+                SeqPath = self.sf03Seq_path.joinpath(sequence['code'])
+                #seq_name = shot['sg_sequence']['name']
+                print(SeqPath)
+                SeqPath.mkdir()
+
+                for shot in shots:
+                    if shot['sg_sequence']['name'] == sequence['code']:
+                        ShotPath = SeqPath.joinpath(shot['code'])
+                        ShotPath.mkdir()
 
                 # sequence_code = sequence['name']
         #for shot in shots:
