@@ -11,6 +11,7 @@ class FolderAniCreator():
     def __init__(self):
         super().__init__()
 
+        self.sf_Common_path =''
         self.sf01Env_path = ''
         self.sf02Ch_path = ''
         self.sf03Seq_path = ''
@@ -30,6 +31,18 @@ class FolderAniCreator():
         # Inside UE project define mother folder
         UEContent_folder_name = 'Content'
 
+        # Example Folder Common
+        folder_path_common = 'D:/Projects/UnreaProjects/ExampleFoldersCommon'
+
+        # Example Folder Character
+        folder_path_character = 'D:/Projects/UnreaProjects/ExampleFoldersCharacter'
+
+        # Example Folder VPXR
+        folder_path_vpxr = 'D:/Projects/UnreaProjects/ExampleFoldersVPXR'
+
+        # Example Folder Env
+        folder_path_env = 'D:/Projects/UnreaProjects/ExampleFoldersEnv'
+
         # Get the current date
         today = datetime.date.today()
 
@@ -43,6 +56,7 @@ class FolderAniCreator():
         date_top_folder_name = date_str + '_' + top_folder_name
 
         # Define 2nd lvl Folder names
+        sub_folder__Common = '_Common'
         sub_folder_01Env = '01_Env'
         sub_folder_02Ch = '02_Ch'
         sub_folder_03Seq = '03_Seq'
@@ -71,12 +85,14 @@ class FolderAniCreator():
         print(old_uproject_path_name, new_uproject_path_name)
 
         # Create level 2 subfolder path
+        self.sf_Common_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder__Common))
         self.sf01Env_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env))
         self.sf02Ch_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch))
         self.sf03Seq_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
         self.sef04Temp_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
 
         # create level 2 subfolders
+        self.sf_Common_path.mkdir()
         self.sf01Env_path.mkdir()
         self.sf02Ch_path.mkdir()
         self.sf03Seq_path.mkdir()
@@ -90,26 +106,61 @@ class FolderAniCreator():
         for sequence in sequences:
             if sequence:
                 SeqPath = self.sf03Seq_path.joinpath(sequence['code'])
-                #seq_name = shot['sg_sequence']['name']
-                # print(SeqPath)
+
+                #Make Sequence folders
                 SeqPath.mkdir()
 
+                #Make Shot folders
                 for shot in shots:
                     if shot['sg_sequence']['name'] == sequence['code']:
                         ShotPath = SeqPath.joinpath(shot['code'])
                         ShotPath.mkdir()
+
+                        # Make shots into a file path array
                         ShotPathPerline = str(ShotPath) + ' \n'
                         shotsPathArray.append(ShotPathPerline)
 
-        print(shotsPathArray)
+        # print(shotsPathArray)
 
         # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
-
         filename = 'shotsPath.txt'
         filepath = os.path.join(new_folder_path, 'Saved', filename)
         with open(filepath, 'w') as f:
+
+            #Get shots array and into a txt file
             f.writelines(shotsPathArray)
 
+        # Create Sets subfolders
+        sets = c_query.shotgridAsset(project_id)
+        setsPathArray = []
+
+        for set in sets:
+            try:
+                if set:
+                    # Create all sg_asset_type: Set folders
+                    if str(set['sg_asset_type']) == 'Set':
+                        SetPath = self.sf01Env_path.joinpath(set['code'])
+                        SetPathPerline = str(SetPath) + '\Maps' + ' \n'
+                        setsPathArray.append(SetPathPerline)
+
+                        # Copy example env folder and then rename the folder
+                        shutil.copytree(folder_path_env, SetPath)
+                        example_folder = SetPath.joinpath('ExampleFoldersEnv')
+                        if os.path.exists(example_folder):
+                            os.rename(example_folder, SetPath)
+
+
+            except Exception as e:
+                print(f'An error occurred: {e}')
+        # print(setsPathArray)
+
+        # Pass Sets path for Unreal Script use, store into a setsPath.txt file
+        filename = 'setsPath.txt'
+        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        with open(filepath, 'w') as f:
+
+            #Get shots array and into a txt file
+            f.writelines(setsPathArray)
 
 
 if __name__ == '__main__':
