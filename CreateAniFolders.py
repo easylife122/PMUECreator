@@ -101,12 +101,13 @@ class FolderAniCreator():
         self.sf01Env_path.mkdir()
         self.sf02Ch_path.mkdir()
         self.sf03Seq_path.mkdir()
-        self.sef04Temp_path.mkdir
+        self.sef04Temp_path.mkdir()
 
         # Create Sequences and Shots subfolders
         sequences = c_query.shotgridSequence(project_id)
         shots = c_query.shotgridShot(project_id)
         shotsPathArray = []
+        shotsNameArray = []
         for sequence in sequences:
             if sequence:
                 SeqPath = self.sf03Seq_path.joinpath(sequence['code'])
@@ -124,6 +125,10 @@ class FolderAniCreator():
                         ShotPathPerline = str(ShotPath) + ' \n'
                         shotsPathArray.append(ShotPathPerline)
 
+                        # Make Sequence name into a file
+                        shotsNamePerline = str(shot['code']) + '\n'
+                        shotsNameArray.append(shotsNamePerline)
+
         # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
         filename = 'shotsPath.txt'
         filepath = os.path.join(new_folder_path, 'Saved', filename)
@@ -131,6 +136,15 @@ class FolderAniCreator():
 
             #Get shots array and into a txt file
             f.writelines(shotsPathArray)
+
+        # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
+        filename = 'shotsName.txt'
+        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        with open(filepath, 'w') as f:
+
+            #Get shots array and into a txt file
+            f.writelines(shotsNameArray)
+
 
         # Create Sets subfolders
         sets = c_query.shotgridAsset(project_id)
