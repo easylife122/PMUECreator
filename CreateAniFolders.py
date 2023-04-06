@@ -131,7 +131,7 @@ class FolderAniCreator():
 
         # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
         filename = 'shotsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        filepath = os.path.join(new_folder_path, 'Content', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file
@@ -147,7 +147,9 @@ class FolderAniCreator():
                     # Create all sg_asset_type: Set folders
                     if str(set['sg_asset_type']) == 'Set':
                         SetPath = self.sf01Env_path.joinpath(set['code'])
-                        SetPathPerline = str(SetPath) + '\Maps' + ' \n'
+
+                        # Create setsPath.txt  set path + set code
+                        SetPathPerline = str(SetPath) + '\Maps' + '+' + str(set['code']) + '\n'
                         setsPathArray.append(SetPathPerline)
 
                         # Copy example env folder and then rename the folder
@@ -162,7 +164,7 @@ class FolderAniCreator():
 
         # Pass Sets path for Unreal Script use, store into a setsPath.txt file
         filename = 'setsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        filepath = os.path.join(new_folder_path, 'Content', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file
@@ -179,7 +181,7 @@ class FolderAniCreator():
                     # Create all sg_asset_type: Character folders
                     if str(character['sg_asset_type']) == 'Char':
                         ChPath = self.sf02Ch_path.joinpath(character['code'])
-                        ChPathPerline = str(ChPath) + ' \n'
+                        ChPathPerline = str(ChPath) + '+' + str(character['code']) + ' \n'
                         chPathArray.append(ChPathPerline)
 
                          # Copy example env folder and then rename the folder
@@ -193,7 +195,7 @@ class FolderAniCreator():
 
         # Pass Sets path for Unreal Script use, store into a setsPath.txt file
         filename = 'chsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Saved', filename)
+        filepath = os.path.join(new_folder_path, 'Content', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file

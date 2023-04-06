@@ -13,16 +13,20 @@ asset_tools = unreal.AssetToolsHelpers.get_asset_tools()
 # Create a new Level Sequence asset in the specified folder
 factorySeq = unreal.LevelSequenceFactoryNew()
 
-# Set the path to the text file
-file_path = 'D:/Projects/UEProjectTemp/202304_MofaBoca/Saved/shotsPath.txt'
+# Shots path text file
+file_path_shots = '/Game/shotsPath.txt'
+
+# Sets path text file
+file_path_sets = '/Game/setsPath.txt'
 
 # Create an empty list to store the listSeqseqs
 listSeqs = []
 shotsArray = []
 pathsArray = []
+listSets = []
 
 # Open the text file for reading
-with open(file_path, 'r') as file:
+with open(file_path_shots, 'r') as file:
     # Read each line from the file
     for line in file:
         # Convert the line to a list and add it to the list
@@ -41,7 +45,23 @@ for text in listSeqs:
 
 # Create a new Level asset in the specified folder
 factoryLvl = unreal.WorldFactory()
-new_level = asset_tools.create_asset(level_name, folder_path, unreal.World, factoryLvl)
 
-# Save all modified assets
-unreal.EditorAssetLibrary.save_loaded_assets()
+# Open the text file for Env path and names
+with open(file_path_sets, 'r') as fileSets:
+    # Read each line from the file
+    for lineSet in fileSets:
+        # Convert the line to a list and add it to the list
+        listSet = lineSet.strip()
+        listSetRenameSlash = listSet.replace('\\', '/')
+        listSetSplit = listSetRenameSlash.split('/Content')
+        listSetArray = '/Game' + listSetSplit[1]
+        listSets.append(listSetArray)
+
+# Split listSets into SetsPathArray and SetsNameArray
+for textSet in listSets:
+    split_setsline = textSet.split('+')
+    _level = asset_tools.create_asset('_' + split_setsline[1], split_setsline[0], unreal.World, factoryLvl)
+    level_light = asset_tools.create_asset(split_setsline[1] + '_Light', split_setsline[0], unreal.World, factoryLvl)
+    level_prop = asset_tools.create_asset(split_setsline[1] + '_Props', split_setsline[0], unreal.World, factoryLvl)
+
+
