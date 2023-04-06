@@ -122,7 +122,7 @@ class FolderAniCreator():
                         ShotPath.mkdir()
 
                         # Make shots into a file path array
-                        ShotPathPerline = str(ShotPath) + ' \n'
+                        ShotPathPerline = str(ShotPath) + '+' + str(shot['code']) + '\n'
                         shotsPathArray.append(ShotPathPerline)
 
                         # Make Sequence name into a file
@@ -136,15 +136,6 @@ class FolderAniCreator():
 
             #Get shots array and into a txt file
             f.writelines(shotsPathArray)
-
-        # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
-        filename = 'shotsName.txt'
-        filepath = os.path.join(new_folder_path, 'Saved', filename)
-        with open(filepath, 'w') as f:
-
-            #Get shots array and into a txt file
-            f.writelines(shotsNameArray)
-
 
         # Create Sets subfolders
         sets = c_query.shotgridAsset(project_id)
