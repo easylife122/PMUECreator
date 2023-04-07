@@ -1,11 +1,10 @@
-import RunUE
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QComboBox
-from CreateAniFolders import FolderAniCreator
-import ShotGridInterface
+from createFolders import FolderAniCreator
+import shotGridInterface
 
-# Get ShotGridInterface.py to a query instance
-m_query = ShotGridInterface.query
+# Get shotGridInterface.py to a query instance
+m_query = shotGridInterface.query
 
 class UICreator(QMainWindow):
 
@@ -15,6 +14,8 @@ class UICreator(QMainWindow):
         # Variable Initialization
         self.project_name = ''
         self.project_id = ''
+        self.ue_version_index = 0
+        self.content_type = 'Animation'
 
         # Set the main window title
         self.setWindowTitle('Shotgrid-uProject Creator')
@@ -28,7 +29,7 @@ class UICreator(QMainWindow):
         top_folder_label = QLabel('Select a project:')
         layout.addWidget(top_folder_label)
 
-        # Call ShotGridInterface.py to get projects
+        # Call shotGridInterface.py to get projects
         self.projects = m_query.shotgridProject()
 
         # Create a combo box and add each project name to it
@@ -41,10 +42,56 @@ class UICreator(QMainWindow):
         # Connect the currentTextChanged signal of the combo box to the print_selected_project_name slot function
         self.combo_box.currentTextChanged.connect(self.get_selected_project_name)
 
+
+
+        #########################################################################
+        # Add a label for the engine version combo box
+        engine_version_label = QLabel('Select Unreal Engine version:')
+        layout.addWidget(engine_version_label)
+
+        # Create an engine version combo box and add items to it
+        self.engine_version_combo_box = QComboBox()
+        self.engine_version_combo_box.addItems(['UE 4.27', 'UE 5.0', 'UE 5.1'])
+        layout.addWidget(self.engine_version_combo_box)
+
+
+        #########################################################################
+        # Add a label for the choose menu combo box
+        choose_menu_label = QLabel('Select content type:')
+        layout.addWidget(choose_menu_label)
+
+        # Create a choose menu combo box and add items to it
+        self.choose_menu_combo_box = QComboBox()
+        self.choose_menu_combo_box.addItems(['Animation', 'VP / XR'])
+        layout.addWidget(self.choose_menu_combo_box)
+
+        # Retrieve engine version Index Number from UI
+        self.engine_version_combo_box.currentIndexChanged.connect(self.engine_version_changed)
+        # Retrieve menu Text from UI
+        self.choose_menu_combo_box.currentTextChanged.connect(self.menu_changed)
+
+        #########################################################################
         # Create a button to run the folder creation function
         create_button = QPushButton('Create Folders', self)
         create_button.clicked.connect(self.clicked_create_folder)
         layout.addWidget(create_button)
+
+        # print(self.ue_version_index, self.content_type)
+
+    # Select Engine Version
+    def engine_version_changed(self, index):
+        # This function will be called whenever the user selects a different engine version
+        # The text parameter contains the text of the currently selected item
+        self.ue_version_index = index
+        print(f'Engine version: {index}')
+
+    # Select content type
+    def menu_changed(self, text):
+        # This function will be called whenever the user selects a different menu
+        # The text parameter contains the text of the currently selected item
+        self.content_type = text
+        print(f'Content Type: {text}')
+
 
     # Define a slot function to print the selected project name
     def get_selected_project_name(self):
@@ -61,8 +108,13 @@ class UICreator(QMainWindow):
                 self.project_id = project['id']
                 print(self.project_id)
 
+
         # Run create animation folder module
-        folderAni.create_folders(self.project_name, self.project_id)
+        folderAni.create_folders(self.project_name, self.project_id, self.ue_version_index, self.content_type)
+
+
+
+
 
 
 # Call CreateAniFolders
