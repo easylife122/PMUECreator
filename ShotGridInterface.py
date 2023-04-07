@@ -9,7 +9,6 @@ class shotgridQuery():
         self.sequences = []
         self.shots = []
 
-        # Replace the values below with your own API key and script name
 
 
         # Create a connection to the Shotgrid API

@@ -4,6 +4,7 @@ import datetime
 import ShotGridInterface
 from pathlib import Path
 
+
 # Get ShotGridInterface.py to a query instance
 c_query = ShotGridInterface.query
 
@@ -15,33 +16,37 @@ class FolderAniCreator():
         self.sf01Env_path = ''
         self.sf02Ch_path = ''
         self.sf03Seq_path = ''
-        self.sef04Temp_path = ''
+        self.sf04Temp_path = ''
+        self.sfPython_path = ''
 
     def create_folders(self, top_folder_entry, project_id):
 
-        # Create folder to destination
+        # [REPLACE] Create folder to destination
         target_dir = 'D:/Projects/UEProjectTemp'
 
-        # A folder directory for copying UE sample project
+        # [REPLACE] A folder directory for copying UE sample project
         UE_source_folder = "D:/Projects/UnreaProjects/ExampleUE_5_1_1"
 
-        # Define the UE sample project .uproject name
+        # [REPLACE] Define the UE sample project .uproject name
         example_uproject_name = 'ExampleUE_5_1_1.uproject'
 
         # Inside UE project define mother folder
         UEContent_folder_name = 'Content'
 
-        # Example Folder Common
+        # [REPLACE] Example Folder Common
         folder_path_common = 'D:/Projects/UnreaProjects/ExampleFoldersCommon'
 
-        # Example Folder Character
+        # [REPLACE] Example Folder Character
         folder_path_character = 'D:/Projects/UnreaProjects/ExampleFoldersCharacter'
 
-        # Example Folder VPXR
+        # [REPLACE] Example Folder VPXR
         folder_path_vpxr = 'D:/Projects/UnreaProjects/ExampleFoldersVPXR'
 
-        # Example Folder Env
+        # [REPLACE] Example Folder Env
         folder_path_env = 'D:/Projects/UnreaProjects/ExampleFoldersEnv'
+
+        # [REPLACE] Example Folder Python Script for Animation
+        folder_path_AniPyScript = 'D:/Projects/UnreaProjects/ExampleAnimScript/Python'
 
         # Get the current date
         today = datetime.date.today()
@@ -61,7 +66,7 @@ class FolderAniCreator():
         sub_folder_02Ch = '02_Ch'
         sub_folder_03Seq = '03_Seq'
         sub_folder_04Temp = '04_Temp'
-
+        sub_folder_Python = 'Python'
 
 
         # create the target directory if it doesn't already exist
@@ -77,6 +82,8 @@ class FolderAniCreator():
         new_folder_path = target_dir + '/' + new_folder_name
         shutil.move(copied_folder_path, new_folder_path)
 
+        new_folder_path_content = new_folder_path + '/Content/'
+
         # rename .uproject
         old_uproject_path_name = new_folder_path +'/' + example_uproject_name
         new_uproject_name = top_folder_entry_remove_space + '.uproject'
@@ -89,7 +96,8 @@ class FolderAniCreator():
         self.sf01Env_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_01Env))
         self.sf02Ch_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_02Ch))
         self.sf03Seq_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_03Seq))
-        self.sef04Temp_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
+        self.sf04Temp_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_04Temp))
+
 
         # create level 2 subfolders _Common
         shutil.copytree(folder_path_common, self.sf_Common_path)
@@ -101,7 +109,17 @@ class FolderAniCreator():
         self.sf01Env_path.mkdir()
         self.sf02Ch_path.mkdir()
         self.sf03Seq_path.mkdir()
-        self.sef04Temp_path.mkdir()
+        self.sf04Temp_path.mkdir()
+
+        # Find Content Path
+        content_folder_path = Path(os.path.join(target_dir, date_top_folder_name, UEContent_folder_name, sub_folder_Python))
+
+        # copy Python folder
+        shutil.copytree(folder_path_AniPyScript, content_folder_path)
+        python_animation_folder = content_folder_path.joinpath('Python')
+        if os.path.exists(python_animation_folder):
+            os.rename(python_animation_folder, content_folder_path)
+
 
         # Create Sequences and Shots subfolders
         sequences = c_query.shotgridSequence(project_id)
@@ -131,7 +149,7 @@ class FolderAniCreator():
 
         # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
         filename = 'shotsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Content', filename)
+        filepath = os.path.join(new_folder_path, 'Content/Python', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file
@@ -164,7 +182,7 @@ class FolderAniCreator():
 
         # Pass Sets path for Unreal Script use, store into a setsPath.txt file
         filename = 'setsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Content', filename)
+        filepath = os.path.join(new_folder_path, 'Content/Python', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file
@@ -195,11 +213,15 @@ class FolderAniCreator():
 
         # Pass Sets path for Unreal Script use, store into a setsPath.txt file
         filename = 'chsPath.txt'
-        filepath = os.path.join(new_folder_path, 'Content', filename)
+        filepath = os.path.join(new_folder_path, 'Content/Python', filename)
         with open(filepath, 'w') as f:
 
             #Get shots array and into a txt file
             f.writelines(chPathArray)
+
+        # Opens the Unreal Engine Project with their prefer engine editor, with the specified project file.
+        os.startfile(f'{new_uproject_path_name}')
+        #print(new_folder_path)
 
 if __name__ == '__main__':
     pass

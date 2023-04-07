@@ -16,8 +16,8 @@ class UICreator(QMainWindow):
         self.project_name = ''
         self.project_id = ''
 
-         # Set the main window title
-        self.setWindowTitle('Folder Creator')
+        # Set the main window title
+        self.setWindowTitle('Shotgrid-uProject Creator')
 
         # Create a central widget and set its layout
         central_widget = QWidget(self)
@@ -76,6 +76,5 @@ ui_create.show()
 # start the event loop
 sys.exit(app.exec_())
 
-path = 'D:/Projects/UEProjectTemp/202303_GGGG/ExampleUE_5_1_1.uproject'
-# RunUE.open_ue_project(path)
+
 
