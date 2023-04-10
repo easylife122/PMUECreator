@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QPushButton, QVBoxLayout, QWidget, QComboBox
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBoxLayout, QWidget, QComboBox
+from PyQt5.QtGui import QIcon, QFont
 from createFolders import FolderAniCreator
 import shotGridInterface
 
@@ -18,10 +19,32 @@ class UICreator(QMainWindow):
         self.content_type = 'Animation'
 
         # Set the main window title
-        self.setWindowTitle('Shotgrid-uProject Creator')
+        self.setWindowTitle('Shotgrid-uProject Creator Beta')
+
+        # Set the window icon
+        self.setWindowIcon(QIcon('D:/Projects/UnreaProjects/R.png'))
 
         # Set a fixed size for the window
         self.setFixedSize(400, 200)
+
+        # Apply a dark theme using a style sheet
+        self.setStyleSheet("""
+                    QWidget {
+                        background-color: #2D2D30;
+                        color: #F7F7F7;
+                    }
+                    QPushButton {
+                        background-color: #3C3C40;
+                        border: 1px solid #5A5A5C;
+                        padding: 5px 10px;
+                    }
+                    QPushButton:hover {
+                        background-color: #47474C;
+                    }
+                    QPushButton:pressed {
+                        background-color: #323234;
+                    }
+                """)
 
         # Create a central widget and set its layout
         central_widget = QWidget(self)
@@ -30,6 +53,7 @@ class UICreator(QMainWindow):
 
         # Add a label for the combo box
         top_folder_label = QLabel('Select a project:')
+
         layout.addWidget(top_folder_label)
 
         # Call shotGridInterface.py to get projects
@@ -44,6 +68,9 @@ class UICreator(QMainWindow):
 
         # Connect the currentTextChanged signal of the combo box to the print_selected_project_name slot function
         self.combo_box.currentTextChanged.connect(self.get_selected_project_name)
+
+
+
 
 
 
