@@ -28,7 +28,7 @@ class shotgridQuery():
         _filter = [['project', 'is', {'id': project_id, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
 
         # Only call 'Asset', 'Sequence', Shot'
-        self.assets = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
+        self.assets = self.sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type', 'description'])
 
         return self.assets
 

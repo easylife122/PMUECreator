@@ -20,6 +20,9 @@ class UICreator(QMainWindow):
         # Set the main window title
         self.setWindowTitle('Shotgrid-uProject Creator')
 
+        # Set a fixed size for the window
+        self.setFixedSize(400, 200)
+
         # Create a central widget and set its layout
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)

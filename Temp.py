@@ -14,7 +14,7 @@ sg = shotgun_api3.Shotgun(SERVER_PATH, script_name=SCRIPT_NAME, api_key=API_KEY)
 project_id = 4082
 
 _filter = [['project', 'is', {'id': project_id, 'type': 'Project'}], ['sg_status_list', 'is_not', 'omt']]
-asset_data = sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type'])
+asset_data = sg.find('Asset', _filter, ['id', 'code', 'sg_asset_type', 'description'])
 sequence_data = sg.find('Sequence', _filter, ['id', 'code', 'sg_asset_type'])
 shot_data = sg.find('Shot', _filter, ['id', 'code', 'sg_asset_type'])
 

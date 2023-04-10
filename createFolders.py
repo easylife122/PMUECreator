@@ -47,6 +47,9 @@ class FolderAniCreator():
         # [REPLACE] Example Folder Env
         self.folder_path_env = 'D:/Projects/UnreaProjects/ExampleFoldersEnv'
 
+        # [REPLACE] Example Folder Env
+        self.folder_path_env_vpxr = 'D:/Projects/UnreaProjects/ExampleFoldersEnvVPXR'
+
         # [REPLACE] Example Folder Python Script for Animation
         self.folder_path_AniPyScript = 'D:/Projects/UnreaProjects/ExampleAnimScript/Python'
 
@@ -93,7 +96,7 @@ class FolderAniCreator():
             new_uproject_name = self.top_folder_entry_remove_space + '.uproject'
             new_uproject_path_name = new_folder_path + '/' + new_uproject_name
             os.rename(old_uproject_path_name, new_uproject_path_name)
-            print(old_uproject_path_name, new_uproject_path_name)
+            # print(old_uproject_path_name, new_uproject_path_name)
 
             # Create level 2 subfolder path
             self.sf_Common_path = Path(os.path.join(self.target_dir, self.date_top_folder_name, self.UEContent_folder_name, self.top_folder_name_OnTop, sub_folder__Common))
@@ -223,11 +226,37 @@ class FolderAniCreator():
                 #Get shots array and into a txt file
                 f.writelines(chPathArray)
 
+            # Create ReadMe.txt
+            readmefile = c_query.shotgridAsset(project_id)
+            readmeArray = []
+
+            for readme in readmefile:
+                try:
+                    if readme:
+                        # Create readme data in
+                        readmePerline = str(readme['sg_asset_type']) + ': ' + str(readme['code']) + ' -> ' + str(readme['description']) + ' \n'
+                        # print(readmePerline)
+                        readmeArray.append(readmePerline)
+
+                except Exception as e2:
+                    print(f'An error occurred: {e2}')
+
+
+            # Pass Readme datas for user
+            fileReadmeName = 'ReadMe.txt'
+            #print(new_folder_path)
+            fileReadMePath = os.path.join(new_folder_path, fileReadmeName)
+            with open(fileReadMePath, 'w', encoding='utf-8') as f:
+
+                #Get type code description in txt file
+                 f.writelines(readmeArray)
+
+
             # Opens the Unreal Engine Project with their prefer engine editor, with the specified project file.
             os.startfile(f'{new_uproject_path_name}')
-      
-      
-      
+
+
+
 
         if content_type == 'VP / XR':
 
@@ -256,7 +285,7 @@ class FolderAniCreator():
             new_uproject_name = self.top_folder_entry_remove_space + '.uproject'
             new_uproject_path_name = new_folder_path + '/' + new_uproject_name
             os.rename(old_uproject_path_name, new_uproject_path_name)
-            print(old_uproject_path_name, new_uproject_path_name)
+            #print(old_uproject_path_name, new_uproject_path_name)
 
             # Create _Common subfolder path
             self.sf_Common_path = Path(
@@ -271,7 +300,7 @@ class FolderAniCreator():
             movies_folder_path.mkdir()
             movies_folder_path_string = f'{movies_folder_path}'
             movies_folder_path_rename = movies_folder_path_string.replace('\\', '/')
-            print(movies_folder_path_rename)
+            #print(movies_folder_path_rename)
 
             # Copy _Common subfolder from ExampleFoldersCommon
             shutil.copytree(self.folder_path_common, self.sf_Common_path)
@@ -317,8 +346,8 @@ class FolderAniCreator():
                             setsPathArray.append(SetPathPerline)
 
                             # Copy example env folder and then rename the folder
-                            shutil.copytree(self.folder_path_env, SetPath)
-                            example_folder = SetPath.joinpath('ExampleFoldersEnv')
+                            shutil.copytree(self.folder_path_env_vpxr, SetPath)
+                            example_folder = SetPath.joinpath('ExampleFoldersEnvVPXR')
                             if os.path.exists(example_folder):
                                 os.rename(example_folder, SetPath)
 
@@ -344,6 +373,31 @@ class FolderAniCreator():
 
                 # Get shots array and into a txt file
                 f.writelines(chPathArray)
+
+            # Create ReadMe.txt
+            readmefile = c_query.shotgridAsset(project_id)
+            readmeArray = []
+
+            for readme in readmefile:
+                try:
+                    if readme:
+                        # Create readme data in
+                        readmePerline = str(readme['sg_asset_type']) + ': ' + str(readme['code']) + ' -> ' + str(readme['description']) + ' \n'
+                        # print(readmePerline)
+                        readmeArray.append(readmePerline)
+
+                except Exception as e2:
+                    print(f'An error occurred: {e2}')
+
+
+            # Pass Readme datas for user
+            fileReadmeName = 'ReadMe.txt'
+            #print(new_folder_path)
+            fileReadMePath = os.path.join(new_folder_path, fileReadmeName)
+            with open(fileReadMePath, 'w', encoding='utf-8') as f:
+
+                #Get type code description in txt file
+                 f.writelines(readmeArray)
 
             # Opens the Unreal Engine Project with their prefer engine editor, with the specified project file.
             os.startfile(f'{new_uproject_path_name}')
