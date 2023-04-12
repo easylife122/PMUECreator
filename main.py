@@ -113,14 +113,14 @@ class UICreator(QMainWindow):
         # This function will be called whenever the user selects a different engine version
         # The text parameter contains the text of the currently selected item
         self.ue_version_index = index
-        print(f'Engine version: {index}')
+        # print(f'Engine version: {index}')
 
     # Select content type
     def menu_changed(self, text):
         # This function will be called whenever the user selects a different menu
         # The text parameter contains the text of the currently selected item
         self.content_type = text
-        print(f'Content Type: {text}')
+        # print(f'Content Type: {text}')
 
 
     # Define a slot function to print the selected project name
@@ -136,7 +136,7 @@ class UICreator(QMainWindow):
         for project in self.projects:
             if project['name'] == self.project_name:
                 self.project_id = project['id']
-                print(self.project_id)
+                # print(self.project_id)
 
 
         # Run create animation folder module
