@@ -79,15 +79,41 @@ class FolderAniCreator():
         today = datetime.date.today()
 
         # Format the date as YYYY-MM-DD
-        date_str = today.strftime('%Y%m')
+        month_str = today.strftime('%Y%m')
 
+        # Get the current date and time
+        now_str = datetime.datetime.now()
+        # print(now_str)
 
         # Get input values from text fields and remove space and replace to '_'
         top_folder_entry_remove_colon = top_folder_entry.replace(':', "")
         self.top_folder_entry_remove_space = top_folder_entry_remove_colon.replace(" ", "_")
         self.top_folder_name = self.top_folder_entry_remove_space
-        self.date_top_folder_name = date_str + '_' + self.top_folder_name
+        self.date_top_folder_name = month_str + '_' + self.top_folder_name
         self.top_folder_name_OnTop = '_' + self.top_folder_name
+
+        # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
+        filename_log = month_str + '_Log.txt'
+        # Log Path
+        log_folder_path = config.get('Settings', 'log_folder')
+        log_file_path = log_folder_path.replace('\\','/') + '/' + filename_log
+        print(log_file_path)
+
+        if os.path.exists(log_file_path):
+            with open(log_file_path, 'a') as f:
+                # Get shots array and into a txt file
+                f.writelines(str(now_str) + '->' + str(self.top_folder_name) + '\n')
+                # f.write('Hello\n')
+
+        if not os.path.exists(log_file_path):
+            filepath_log = os.path.join(log_folder_path, filename_log)
+            filepath_log_rename = filepath_log.replace('\\', '/')
+
+            with open(filepath_log_rename, 'w') as f:
+
+                # Get shots array and into a txt file
+                f.writelines(str(now_str) + '->' + str(self.top_folder_name) + '\n')
+
 
         if content_type == 'Animation':
             # Define 2nd lvl Folder names
