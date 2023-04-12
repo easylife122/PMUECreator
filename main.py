@@ -3,6 +3,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QPushButton, QVBo
 from PyQt5.QtGui import QIcon, QFont
 from createFolders import FolderAniCreator
 import shotGridInterface
+import configparser
+
+# Create a ConfigParser object
+config = configparser.ConfigParser()
 
 # Get shotGridInterface.py to a query instance
 m_query = shotGridInterface.query
@@ -18,11 +22,17 @@ class UICreator(QMainWindow):
         self.ue_version_index = 0
         self.content_type = 'Animation'
 
+        # Read the configuration file
+        config.read('N:\Softwares&Tools\Sg2Uproject\Config\config.ini')
+
+        # Get the value of the 'parameter' option in the 'Settings' section
+        icon = config.get('Settings', 'icon')
+
         # Set the main window title
-        self.setWindowTitle('Shotgrid-uProject Creator Beta')
+        self.setWindowTitle('Sg2Uproject 0.1.0')
 
         # Set the window icon
-        self.setWindowIcon(QIcon('D:/Projects/UnreaProjects/R.png'))
+        self.setWindowIcon(QIcon(icon))
 
         # Set a fixed size for the window
         self.setFixedSize(400, 200)

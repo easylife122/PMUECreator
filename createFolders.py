@@ -3,7 +3,10 @@ import shutil
 import datetime
 import shotGridInterface
 from pathlib import Path
+import configparser
 
+# Create a ConfigParser object
+config = configparser.ConfigParser()
 
 # Get shotGridInterface.py to a query instance
 c_query = shotGridInterface.query
@@ -21,11 +24,22 @@ class FolderAniCreator():
 
     def create_folders(self, top_folder_entry, project_id, ue_version_index, content_type):
 
+        # Read the configuration file
+        config.read('N:\Softwares&Tools\Sg2Uproject\Config\config.ini')
+
+        # Get the value of the 'parameter' option in the 'Settings' section
+        #icon = config.get('Settings', 'icon')
+
         # [REPLACE] Create folder to destination
-        self.target_dir = 'D:/Projects/UEProjectTemp'
+        self.target_dir = config.get('Settings', 'target_dir')
+
+        # Get the value of the 'ExampleUE_version' option in the 'Settings' section
+        ExampleUE427 = config.get('Settings', 'ExampleUE_4_27_2')
+        ExampleUE503 = config.get('Settings', 'ExampleUE_5_0_3')
+        ExampleUE511 = config.get('Settings', 'ExampleUE_5_1_1')
 
         # [REPLACE] A folder directory for copying UE sample project
-        UE_source_folder_array = ['D:/Projects/UnreaProjects/ExampleUE_4_27_2', 'D:/Projects/UnreaProjects/ExampleUE_5_0_3', 'D:/Projects/UnreaProjects/ExampleUE_5_1_1']
+        UE_source_folder_array = [ExampleUE427.replace('\\','/'), ExampleUE503.replace('\\','/'), ExampleUE511.replace('\\','/')]
         self.UE_source_folder = UE_source_folder_array[ue_version_index]
 
         # [REPLACE] Define the UE sample project .uproject name
@@ -35,29 +49,38 @@ class FolderAniCreator():
         # Inside UE project define mother folder
         self.UEContent_folder_name = 'Content'
 
+        folderPathCommon = config.get('Settings', 'folder_path_common')
+        folderPathCharacter = config.get('Settings', 'folder_path_character')
+        folderPathVPXR = config.get('Settings', 'folder_path_vpxr')
+        folderPathEnv = config.get('Settings', 'folder_path_env')
+        folderPathEnvVPXR = config.get('Settings', 'folder_path_env_vpxr')
+        folderPathAniPyScript = config.get('Settings', 'folder_path_AniPyScript')
+
         # [REPLACE] Example Folder Common
-        self.folder_path_common = 'D:/Projects/UnreaProjects/ExampleFoldersCommon'
+        self.folder_path_common = folderPathCommon.replace('\\', '/')
+
 
         # [REPLACE] Example Folder Character
-        self.folder_path_character = 'D:/Projects/UnreaProjects/ExampleFoldersCharacter'
+        self.folder_path_character = folderPathCharacter.replace('\\', '/')
 
         # [REPLACE] Example Folder VPXR
-        self.folder_path_vpxr = 'D:/Projects/UnreaProjects/ExampleFoldersVPXR'
+        self.folder_path_vpxr = folderPathVPXR.replace('\\', '/')
 
         # [REPLACE] Example Folder Env
-        self.folder_path_env = 'D:/Projects/UnreaProjects/ExampleFoldersEnv'
+        self.folder_path_env = folderPathEnv.replace('\\', '/')
 
         # [REPLACE] Example Folder Env
-        self.folder_path_env_vpxr = 'D:/Projects/UnreaProjects/ExampleFoldersEnvVPXR'
+        self.folder_path_env_vpxr = folderPathEnvVPXR.replace('\\', '/')
 
         # [REPLACE] Example Folder Python Script for Animation
-        self.folder_path_AniPyScript = 'D:/Projects/UnreaProjects/ExampleAnimScript/Python'
+        self.folder_path_AniPyScript = folderPathAniPyScript.replace('\\', '/')
 
         # Get the current date
         today = datetime.date.today()
 
         # Format the date as YYYY-MM-DD
         date_str = today.strftime('%Y%m')
+
 
         # Get input values from text fields and remove space and replace to '_'
         top_folder_entry_remove_colon = top_folder_entry.replace(':', "")
