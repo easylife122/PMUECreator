@@ -98,11 +98,12 @@ class FolderAniCreator():
         log_folder_path = config.get('Settings', 'log_folder')
         log_file_path = log_folder_path.replace('\\','/') + '/' + filename_log
         print(log_file_path)
+        user_name = os.environ['USERNAME']
 
         if os.path.exists(log_file_path):
             with open(log_file_path, 'a') as f:
                 # Get shots array and into a txt file
-                f.writelines(str(now_str) + '->' + str(self.top_folder_name) + '\n')
+                f.writelines(str(now_str) + ' -> ' + str(self.top_folder_name) + ' - ' + str(user_name) + '\n')
                 # f.write('Hello\n')
 
         if not os.path.exists(log_file_path):
@@ -112,7 +113,7 @@ class FolderAniCreator():
             with open(filepath_log_rename, 'w') as f:
 
                 # Get shots array and into a txt file
-                f.writelines(str(now_str) + '->' + str(self.top_folder_name) + '\n')
+                f.writelines(str(now_str) + ' -> ' + str(self.top_folder_name) + ' - ' + str(user_name) + '\n')
 
 
         if content_type == 'Animation':

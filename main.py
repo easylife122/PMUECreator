@@ -23,13 +23,13 @@ class UICreator(QMainWindow):
         self.content_type = 'Animation'
 
         # Read the configuration file
-        config.read('N:\Softwares&Tools\Sg2Uproject\Config\config.ini')
+        config.read('N:\\Softwares&Tools\\uProjectStarter\\Config\\config.ini')
 
         # Get the value of the 'parameter' option in the 'Settings' section
         icon = config.get('Settings', 'icon')
 
         # Set the main window title
-        self.setWindowTitle('Sg2Uproject 0.1.0')
+        self.setWindowTitle('uProjectStarter 0.1.0')
 
         # Set the window icon
         self.setWindowIcon(QIcon(icon))
