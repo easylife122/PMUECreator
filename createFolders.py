@@ -15,7 +15,7 @@ class FolderAniCreator():
     def __init__(self):
         super().__init__()
 
-        self.sf_Common_path =''
+        self.sf_Common_path = ''
         self.sf01Env_path = ''
         self.sf02Ch_path = ''
         self.sf03Seq_path = ''
@@ -25,7 +25,7 @@ class FolderAniCreator():
     def create_folders(self, top_folder_entry, project_id, ue_version_index, content_type):
 
         # Read the configuration file
-        config.read('N:\Softwares&Tools\Sg2Uproject\Config\config.ini')
+        config.read('N:\\Softwares&Tools\\uProjectStarter\\Config\\config.ini')
 
         # Get the value of the 'parameter' option in the 'Settings' section
         #icon = config.get('Settings', 'icon')
@@ -55,10 +55,10 @@ class FolderAniCreator():
         folderPathEnv = config.get('Settings', 'folder_path_env')
         folderPathEnvVPXR = config.get('Settings', 'folder_path_env_vpxr')
         folderPathAniPyScript = config.get('Settings', 'folder_path_AniPyScript')
+        folderPathAssetSubFolder = config.get('Settings', 'folder_path_AssetSubFolder')
 
         # [REPLACE] Example Folder Common
         self.folder_path_common = folderPathCommon.replace('\\', '/')
-
 
         # [REPLACE] Example Folder Character
         self.folder_path_character = folderPathCharacter.replace('\\', '/')
@@ -74,6 +74,8 @@ class FolderAniCreator():
 
         # [REPLACE] Example Folder Python Script for Animation
         self.folder_path_AniPyScript = folderPathAniPyScript.replace('\\', '/')
+
+        self.folder_path_AssetSubFolder = folderPathAssetSubFolder.replace('\\', '/')
 
         # Get the current date
         today = datetime.date.today()
@@ -92,7 +94,7 @@ class FolderAniCreator():
         self.date_top_folder_name = month_str + '_' + self.top_folder_name
         self.top_folder_name_OnTop = '_' + self.top_folder_name
 
-        # Pass Shots path for Unreal Script use, store into a shotsPath.txt file
+        # Create log file for developer
         filename_log = month_str + '_Log.txt'
         # Log Path
         log_folder_path = config.get('Settings', 'log_folder')
@@ -114,6 +116,7 @@ class FolderAniCreator():
 
                 # Get shots array and into a txt file
                 f.writelines(str(now_str) + ' -> ' + str(self.top_folder_name) + ' - ' + str(user_name) + '\n')
+
 
 
         if content_type == 'Animation':
@@ -141,6 +144,27 @@ class FolderAniCreator():
 
             new_folder_path_content = new_folder_path + '/Content/'
 
+            # Create Asset folder for Artists to store their files
+            AssetsFolder = c_query.shotgridAsset(project_id)
+            for AssetFolder in AssetsFolder:
+                try:
+                    if AssetFolder:
+                        AssetNames = AssetFolder['sg_asset_type']
+                        AssetNames_Path = os.path.join(new_folder_path, 'Assets/',
+                                                       AssetNames)
+                        AssetNames_Path_rename = AssetNames_Path.replace('\\', '/')
+                        # print(AssetNames_Path_rename)
+                        # create the target directory if it doesn't already exist
+                        if not os.path.exists(AssetNames_Path_rename):
+                            os.makedirs(AssetNames_Path_rename)
+
+                except Exception as e1:
+                    print(f'An error occurred: {e1}')
+
+
+
+
+
             # rename .uproject
             old_uproject_path_name = new_folder_path +'/' + self.example_uproject_name
             new_uproject_name = self.top_folder_entry_remove_space + '.uproject'
@@ -154,7 +178,6 @@ class FolderAniCreator():
             self.sf02Ch_path = Path(os.path.join(self.target_dir, self.date_top_folder_name, self.UEContent_folder_name, self.top_folder_name_OnTop, sub_folder_02Ch))
             self.sf03Seq_path = Path(os.path.join(self.target_dir, self.date_top_folder_name, self.UEContent_folder_name, self.top_folder_name_OnTop, sub_folder_03Seq))
             self.sf04Temp_path = Path(os.path.join(self.target_dir, self.date_top_folder_name, self.UEContent_folder_name, self.top_folder_name_OnTop, sub_folder_04Temp))
-
 
             # create level 2 subfolders _Common
             shutil.copytree(self.folder_path_common, self.sf_Common_path)
@@ -329,6 +352,26 @@ class FolderAniCreator():
             shutil.move(copied_folder_path, new_folder_path)
 
             new_folder_path_content = new_folder_path + '/Content/'
+
+            # Create Asset folder for Artists to store their files
+            AssetsFolder = c_query.shotgridAsset(project_id)
+            for AssetFolder in AssetsFolder:
+                try:
+                    if AssetFolder:
+                        AssetNames = AssetFolder['sg_asset_type']
+                        AssetNames_Path = os.path.join(new_folder_path, 'Assets/',
+                                                       AssetNames)
+                        AssetNames_Path_rename = AssetNames_Path.replace('\\', '/')
+                        # print(AssetNames_Path_rename)
+                        # create the target directory if it doesn't already exist
+                        if not os.path.exists(AssetNames_Path_rename):
+                            os.makedirs(AssetNames_Path_rename)
+
+                except Exception as e1:
+                    print(f'An error occurred: {e1}')
+
+
+
 
             # rename .uproject
             old_uproject_path_name = new_folder_path + '/' + self.example_uproject_name
